@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bloem Counselling</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --blush:    #f2b8b8;
+      --sage:     #7d9e7a;
+      --sage-lt:  #a8c5a0;
+      --sage-dk:  #4a7046;
+      --stone:    #d6d0c8;
+      --charcoal: #2e2e2e;
+      --off-white:#faf9f7;
+      --white:    #ffffff;
+      --accent:   #8b3a6b;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Jost', sans-serif;
+      background: var(--off-white);
+      color: var(--charcoal);
+      line-height: 1.7;
+    }
+
+    /* ─── NAV ─────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; width: 100%; z-index: 100;
+      background: rgba(250,249,247,0.96);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(125,158,122,0.2);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 5%;
+      height: 72px;
+    }
+    .nav-logo {
+      font-family: 'Dancing Script', cursive;
+      font-size: 1.9rem;
+      color: var(--charcoal);
+      text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.4rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--charcoal);
+      position: relative;
+      transition: color 0.3s;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute; bottom: -4px; left: 0;
+      width: 0; height: 1.5px;
+      background: var(--sage);
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover { color: var(--sage-dk); }
+    .nav-links a:hover::after { width: 100%; }
+
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; }
+    .hamburger span { width: 24px; height: 2px; background: var(--charcoal); border-radius: 2px; transition: 0.3s; }
+
+    /* ─── HERO ─────────────────────────────────── */
+    #home {
+      margin-top: 72px;
+      min-height: calc(100vh - 72px);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      overflow: hidden;
+    }
+    .hero-left {
+      background: var(--stone);
+      display: flex;
+      align-items: flex-end;
+      padding: 60px 5% 0;
+      position: relative;
+    }
+    .hero-left::before {
+      content: '';
+      position: absolute; top: 60px; left: 5%;
+      width: 160px; height: 160px;
+      background: var(--sage-lt);
+      border-radius: 50%;
+      opacity: 0.4;
+    }
+    .hero-portrait-wrap {
+      position: relative; z-index: 2;
+      width: 360px; height: 400px;
+      flex-shrink: 0;
+    }
+    .hero-portrait-bg {
+      position: absolute; bottom: 0; left: 30px;
+      width: 280px; height: 280px;
+      background: var(--sage-lt);
+      border-radius: 50%;
+    }
+    .hero-portrait {
+      position: absolute; bottom: 0; left: 0;
+      width: 320px; height: 380px;
+      object-fit: cover;
+      object-position: top center;
+      border-radius: 180px 180px 0 0;
+      filter: drop-shadow(0 10px 30px rgba(0,0,0,0.15));
+    }
+    .hero-right {
+      background: var(--off-white);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 80px 8% 80px 6%;
+    }
+    .hero-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage-dk);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    .hero-title {
+      font-family: 'Dancing Script', cursive;
+      font-size: clamp(2.8rem, 5vw, 4.4rem);
+      line-height: 1.1;
+      color: var(--charcoal);
+      margin-bottom: 1.5rem;
+    }
+    .hero-sub {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      font-weight: 300;
+      font-style: italic;
+      color: #666;
+      margin-bottom: 2.5rem;
+      max-width: 420px;
+    }
+    .hero-cta {
+      display: inline-block;
+      padding: 14px 36px;
+      background: var(--sage);
+      color: white;
+      text-decoration: none;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: background 0.3s, transform 0.2s;
+      align-self: flex-start;
+    }
+    .hero-cta:hover { background: var(--sage-dk); transform: translateY(-2px); }
+
+    /* ─── SECTION HEADER ─────────────────────── */
+    .section-header {
+      background: linear-gradient(135deg, var(--sage-dk) 0%, var(--sage) 60%, var(--sage-lt) 100%);
+      position: relative;
+      overflow: hidden;
+      padding: 60px 5%;
+      text-align: center;
+      color: var(--off-white);
+    }
+    .section-header::before {
+      content: '';
+      position: absolute; top: -60px; right: 8%;
+      width: 200px; height: 200px;
+      background: rgba(250,249,247,0.12);
+      border-radius: 50%;
+    }
+    .section-header::after {
+      content: '';
+      position: absolute; bottom: -80px; right: 14%;
+      width: 220px; height: 220px;
+      background: rgba(250,249,247,0.08);
+      border-radius: 50%;
+    }
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      position: relative; z-index: 1;
+      color: var(--off-white);
+    }
+    .section-header p {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      opacity: 0.8;
+      position: relative; z-index: 1;
+      color: var(--off-white);
+    }
+
+    /* ─── SERVICES LIST ──────────────────────── */
+    #services-list {
+      padding: 70px 5%;
+      background: white;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 0;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .service-item {
+      padding: 40px 36px;
+      border-bottom: 1px solid #ede9e3;
+      border-right: 1px solid #ede9e3;
+      cursor: pointer;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .service-item:hover { background: #f7f5f2; }
+    .service-item::before {
+      content: '';
+      position: absolute; left: 0; top: 0;
+      width: 3px; height: 0;
+      background: var(--sage);
+      transition: height 0.4s ease;
+    }
+    .service-item:hover::before { height: 100%; }
+    .service-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.5rem;
+      color: var(--stone);
+      font-weight: 300;
+      display: block;
+      margin-bottom: 0.5rem;
+    }
+    .service-name {
+      font-size: 1rem;
+      font-weight: 500;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+    .service-arrow {
+      font-size: 1.2rem;
+      color: var(--sage);
+      position: absolute; right: 30px; bottom: 30px;
+      transition: transform 0.3s;
+    }
+    .service-item:hover .service-arrow { transform: translateX(5px); }
+
+    /* ─── SERVICE DETAILS ────────────────────── */
+    #services-detail {
+      background: var(--off-white);
+      padding: 80px 5%;
+    }
+    .service-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    .service-card {
+      background: white;
+      border-radius: 16px;
+      padding: 44px 40px;
+      border: 1px solid #ede9e3;
+      transition: box-shadow 0.3s, transform 0.3s;
+    }
+    .service-card:hover {
+      box-shadow: 0 20px 50px rgba(0,0,0,0.07);
+      transform: translateY(-4px);
+    }
+    .service-card h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 1.2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--sage-lt);
+    }
+    .service-card p {
+      font-size: 0.95rem;
+      color: #555;
+      line-height: 1.8;
+    }
+    .service-tag {
+      display: inline-block;
+      background: var(--sage-lt);
+      color: var(--sage-dk);
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+    }
+    .service-card .book-btn {
+      display: inline-block;
+      margin-top: 1.5rem;
+      padding: 10px 28px;
+      border: 1.5px solid var(--sage);
+      color: var(--sage-dk);
+      text-decoration: none;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      transition: all 0.3s;
+    }
+    .service-card .book-btn:hover {
+      background: var(--sage);
+      color: white;
+    }
+
+    /* ─── ABOUT ──────────────────────────────── */
+    .about-section {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+    }
+    .about-image {
+      position: relative;
+      overflow: hidden;
+      background: #e8e4df;
+    }
+    .about-image img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: top center;
+    }
+    .about-content {
+      padding: 80px 7%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      background: white;
+    }
+    .about-content .section-tag {
+      font-size: 0.75rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--sage-dk);
+      margin-bottom: 1rem;
+      font-weight: 500;
+    }
+    .about-content h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--charcoal);
+      margin-bottom: 1.5rem;
+      line-height: 1.2;
+    }
+    .about-content p {
+      font-size: 0.95rem;
+      color: #555;
+      margin-bottom: 1rem;
+      line-height: 1.85;
+    }
+    .credentials {
+      margin-top: 2rem;
+      display: flex; flex-direction: column; gap: 0.8rem;
+    }
+    .credential-item {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.85rem; color: #666;
+    }
+    .credential-dot {
+      width: 8px; height: 8px;
+      background: var(--sage);
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    /* ─── CONTACT ────────────────────────────── */
+    .contact-section {
+      background: var(--off-white);
+      padding: 80px 5%;
+    }
+    .contact-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: start;
+    }
+    .contact-info h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      margin-bottom: 2rem;
+      color: var(--charcoal);
+    }
+    .contact-detail {
+      display: flex; align-items: flex-start; gap: 16px;
+      margin-bottom: 1.8rem;
+    }
+    .contact-icon {
+      width: 44px; height: 44px;
+      background: var(--sage-lt);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      font-size: 1.1rem;
+    }
+    .contact-detail-text strong {
+      display: block;
+      font-size: 0.75rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--sage-dk);
+      margin-bottom: 0.3rem;
+    }
+    .contact-detail-text span {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .contact-map {
+      margin-top: 2rem;
+      border-radius: 16px;
+      overflow: hidden;
+      height: 220px;
+      border: 1px solid #ede9e3;
+    }
+    .contact-map iframe {
+      width: 100%; height: 100%;
+      border: none;
+    }
+    .contact-form { display: flex; flex-direction: column; gap: 18px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .form-field { display: flex; flex-direction: column; gap: 6px; }
+    .form-field label {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--sage-dk);
+      font-weight: 500;
+    }
+    .form-field input,
+    .form-field textarea {
+      border: none;
+      border-bottom: 1.5px solid #ccc;
+      background: transparent;
+      padding: 10px 0;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.95rem;
+      color: var(--charcoal);
+      outline: none;
+      transition: border-color 0.3s;
+      resize: none;
+    }
+    .form-field input:focus,
+    .form-field textarea:focus { border-color: var(--sage); }
+    .form-field textarea { height: 120px; }
+    .submit-btn {
+      padding: 14px 40px;
+      background: var(--sage);
+      color: white;
+      border: none;
+      border-radius: 40px;
+      font-family: 'Jost', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      align-self: flex-start;
+    }
+    .submit-btn:hover { background: var(--sage-dk); transform: translateY(-2px); }
+
+    .fs-success-msg {
+      display: none;
+      text-align: center;
+      padding: 40px 30px;
+      background: #f0f7ef;
+      border-radius: 16px;
+      border: 1px solid var(--sage-lt);
+    }
+    .fs-success-msg .fs-success-icon {
+      width: 56px; height: 56px;
+      background: var(--sage);
+      color: white;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      margin: 0 auto 1.2rem;
+    }
+    .fs-success-msg h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--charcoal);
+      margin-bottom: 0.5rem;
+    }
+    .fs-success-msg p {
+      font-size: 0.95rem;
+      color: #555;
+    }
+    .fs-error-msg {
+      display: none;
+      font-size: 0.85rem;
+      color: #c0392b;
+      margin-bottom: 1rem;
+      padding: 12px 16px;
+      background: #fdf0ef;
+      border-radius: 8px;
+      border: 1px solid #f5c6c6;
+    }
+
+    /* ─── FOOTER ─────────────────────────────── */
+    footer {
+      background: var(--charcoal);
+      color: rgba(255,255,255,0.7);
+      padding: 50px 5% 30px;
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      gap: 40px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .footer-brand {
+      font-family: 'Dancing Script', cursive;
+      font-size: 2rem;
+      color: white;
+    }
+    .footer-socials {
+      display: flex; gap: 16px; align-items: center; justify-content: center;
+    }
+    .social-link {
+      width: 42px; height: 42px;
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      text-decoration: none;
+      color: rgba(255,255,255,0.7);
+      font-size: 1rem;
+      transition: all 0.3s;
+    }
+    .social-link:hover {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: white;
+    }
+    .footer-reg {
+      text-align: right;
+      font-size: 0.75rem;
+      line-height: 1.8;
+    }
+    .footer-bottom {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding-top: 24px;
+      text-align: center;
+      font-size: 0.78rem;
+    }
+
+    /* ─── MOBILE ─────────────────────────────── */
+    @media (max-width: 900px) {
+      #home { grid-template-columns: 1fr; }
+      .hero-left { display: none; }
+      .hero-right { padding: 80px 6% 60px; }
+      .service-detail-grid { grid-template-columns: 1fr; }
+      .about-section { grid-template-columns: 1fr; }
+      .about-image { height: 50vw; min-height: 300px; }
+      .contact-inner { grid-template-columns: 1fr; gap: 40px; }
+      .footer-inner { grid-template-columns: 1fr; text-align: center; }
+      .footer-reg { text-align: center; }
+      .footer-socials { justify-content: center; }
+      .hamburger { display: flex; }
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 72px; left: 0; right: 0;
+        background: rgba(250,249,247,0.98);
+        flex-direction: column;
+        padding: 20px 5%;
+        gap: 1.2rem;
+        border-bottom: 1px solid #ddd;
+      }
+      .nav-links.open { display: flex; }
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .services-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#home">Bloem Counselling</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#services">Services</a></li>
+    <li><a href="#about">About Me</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section id="home">
+  <div class="hero-left">
+    <div class="hero-portrait-wrap">
+      <div class="hero-portrait-bg"></div>
+      <img class="hero-portrait" src="images/counsellor-portrait.jpeg" alt="Counsellor portrait" />
+    </div>
+  </div>
+  <div class="hero-right">
+    <span class="hero-tag">Compassionate · Professional · Empowering</span>
+    <h1 class="hero-title">Bloem<br>Counselling</h1>
+    <p class="hero-sub">A warm, safe space reserved just for you — to explore, heal and grow.</p>
+    <a class="hero-cta" href="#contact">Book a Session</a>
+  </div>
+</section>
+
+<!-- SERVICES HEADER -->
+<div class="section-header" id="services" style="scroll-margin-top:72px">
+  <h2>Services</h2>
+  <p>Personalised counselling for every stage of life</p>
+</div>
+
+<!-- SERVICE DETAIL CARDS -->
+<section id="services-detail">
+  <div class="service-detail-grid">
+
+    <div class="service-card" id="emotional">
+      <span class="service-tag">Individual</span>
+      <h3>Emotional &amp; Inner Healing</h3>
+      <p>Embark on a journey of self-discovery and growth in a confidential, warm and safe space. Reserved just for you: time to explore your thoughts, feelings, and experiences. Whether you are facing challenges such as anxiety, depression, relationship issues, or simply seeking personal development, I will support you every step of the way.</p>
+      <p style="margin-top:0.8rem">Guidance is offered to empower you to navigate life's complexities, overcome obstacles, and unlock your full potential. Together we enhance your self-awareness, balance, and foster meaningful positive change in your life.</p>
+      <a class="book-btn" href="#contact">Schedule a Session</a>
+    </div>
+
+    <div class="service-card" id="grief">
+      <span class="service-tag">Healing</span>
+      <h3>Grief Counselling</h3>
+      <p>Navigating the journey of grief can feel overwhelming and isolating, but you don't have to go through it alone. I render compassionate grief counselling to support you through the process of healing and finding hope after loss.</p>
+      <p style="margin-top:0.8rem">Whether you are struggling with overwhelming stages of grief, restlessness, guilt of moving on, or complicated grief — I'm here to listen, validate your feelings, and help you navigate the complexities of grief.</p>
+      <a class="book-btn" href="#contact">Reach Out Today</a>
+    </div>
+
+    <div class="service-card" id="adults">
+      <span class="service-tag">All Ages</span>
+      <h3>Supporting Adults, Teens &amp; Children</h3>
+      <p>Life's challenges can affect individuals of all ages. I offer compassionate counselling services tailored to support adults, teens, and children through every stage of life's journey — including anxiety, depression, school-related stress, self-regulation, and more.</p>
+      <p style="margin-top:0.8rem">I apply age-appropriate techniques and play-based counselling to help children express themselves, process difficult emotions, and develop healthy coping strategies in a supportive and nurturing environment.</p>
+      <a class="book-btn" href="#contact">Book a Session</a>
+    </div>
+
+    <div class="service-card" id="couples">
+      <span class="service-tag">Relationships</span>
+      <h3>Marriage / Couples Counselling</h3>
+      <p>I understand the complexities of relationships and the importance of fostering communication, trust, attachment and intimacy. I provide couples tools and strategies to work through their hardships and foster a stronger bond.</p>
+      <p style="margin-top:0.8rem">My goal is to empower you and your partner to create a relationship grounded in love, respect, and mutual understanding — working towards a healthier and brighter future together.</p>
+      <a class="book-btn" href="#contact">Schedule a Session</a>
+    </div>
+
+    <div class="service-card" id="anxiety">
+      <span class="service-tag">Wellness</span>
+      <h3>Temperament, Stress &amp; Anxiety Counselling</h3>
+      <p>Life's challenges can be overwhelming, and it's alright to seek assistance navigating through them. I provide a safe and supportive environment where you can explore the root causes of your stress and anxiety and develop personalised coping mechanisms.</p>
+      <p style="margin-top:0.8rem">Prolonged stress and anxiety is stored in our bodies and presents as headaches, clenched muscles, tension in your shoulders, heart palpitations, tight chest, digestive issues, immune suppression, and more. Together, let's embark on a journey towards healing and greater well-being.</p>
+      <a class="book-btn" href="#contact">Take the First Step</a>
+    </div>
+
+    <div class="service-card" id="wellness">
+      <span class="service-tag">Corporate</span>
+      <h3>Employee Wellness</h3>
+      <p>Healthy and happy employees are more productive at work. When employees feel physically, mentally, and emotionally balanced, they perform at their top level, leading to better results for both the individual and the company.</p>
+      <p style="margin-top:0.8rem">Employees average spending 37.5% of their day at work. As an employer, company or business, partake in creating a fulfilling environment by providing adequate support. Join me in prioritising employee wellness and experience the benefits of a happier, healthier and more engaged workforce.</p>
+      <a class="book-btn" href="#contact">Enquire Now</a>
+    </div>
+
+    <div class="service-card" id="mindfulness">
+      <span class="service-tag">Mindfulness</span>
+      <h3>Mindfulness &amp; Self Regulation</h3>
+      <p>I am a firm believer that true success begins from within. I'm dedicated to promoting mindfulness and self-regulation counselling techniques that empower individuals to navigate life's challenges with clarity and resilience.</p>
+      <p style="margin-top:0.8rem">Mindfulness is the practice of being fully present and engaged in the present moment, without judgment or attachment to thoughts, feelings or emotions. Benefits include stress reduction, improved focus, better peace of mind, enhanced emotional regulation, and increased self-awareness.</p>
+      <a class="book-btn" href="#contact">Begin the Journey</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ABOUT -->
+<div class="section-header" id="about" style="scroll-margin-top:72px">
+  <h2>About Me</h2>
+  <p>Getting to know your counsellor</p>
+</div>
+
+<section class="about-section">
+  <div class="about-image">
+    <img src="images/counsellor-portrait.jpeg" alt="Counsellor" />
+  </div>
+  <div class="about-content">
+    <span class="section-tag">Established 2023</span>
+    <h2>A Passion for<br>Guiding People</h2>
+    <p>Bloem Counselling was established in 2023, building on five years of experience as a Social Worker. My passion for counselling and guiding human beings through their challenges has led me to this fulfilling profession.</p>
+    <p>My goal is to assist and make a meaningful difference in the lives of individuals, couples and families. I facilitate and guide positive change from all stages of life.</p>
+    <p>My enthusiasm for counselling is deeply rooted in a commitment to support, empower, and foster positive transformation.</p>
+    <p>I obtained my Bachelor of Social Work degree at the University of South Africa whilst working part time.</p>
+    <div class="credentials">
+      <div class="credential-item">
+        <div class="credential-dot"></div>
+        <span>Registered: South African Council for Social Services Professions (SACSSP) — Reg. No: 1049508</span>
+      </div>
+      <div class="credential-item">
+        <div class="credential-dot"></div>
+        <span>Registered: Council for Counsellors in South Africa (C4CSA) — Reg. No: CO30229</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT HEADER -->
+<div class="section-header" id="contact" style="scroll-margin-top:72px">
+  <h2>Contact Us</h2>
+  <p>Reach out and take the first step</p>
+</div>
+
+<!-- CONTACT -->
+<section class="contact-section">
+  <div class="contact-inner">
+    <div class="contact-info">
+      <h2>Get in Touch</h2>
+
+      <div class="contact-detail">
+        <div class="contact-icon">📞</div>
+        <div class="contact-detail-text">
+          <strong>Phone</strong>
+          <span><a href="tel:0798801071" style="color:inherit;text-decoration:none">079 880 1071</a></span>
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-detail-text">
+          <strong>Email</strong>
+          <span><a href="mailto:ageldenbloem@gmail.com" style="color:inherit;text-decoration:none">ageldenbloem@gmail.com</a></span>
+        </div>
+      </div>
+
+      <div class="contact-detail">
+        <div class="contact-icon">📍</div>
+        <div class="contact-detail-text">
+          <strong>Address</strong>
+          <span>Lodge Ronda, 287 Blackwood Rd,<br>Hennopspark, Centurion, 0157</span>
+        </div>
+      </div>
+
+      <div class="contact-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3591.5!2d28.1820!3d-25.8740!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x1e9560b9f6b3e3d7%3A0x1!2s287+Blackwood+Rd%2C+Hennopspark%2C+Centurion!5e0!3m2!1sen!2sza!4v1"
+          allowfullscreen=""
+          loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+
+    <div>
+      <div data-fs-success class="fs-success-msg">
+        <div class="fs-success-icon">✓</div>
+        <h3>Message Sent!</h3>
+        <p>Thank you for reaching out. I'll be in touch with you shortly.</p>
+      </div>
+      <div data-fs-error class="fs-error-msg"></div>
+      <form id="contact-form" class="contact-form">
+        <div class="form-row">
+          <div class="form-field">
+            <label for="name">Name</label>
+            <input type="text" id="name" name="name" placeholder="Your name" data-fs-field required />
+            <span data-fs-error="name" style="font-size:0.78rem; color:#c0392b;"></span>
+          </div>
+          <div class="form-field">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" placeholder="your@email.com" data-fs-field required />
+            <span data-fs-error="email" style="font-size:0.78rem; color:#c0392b;"></span>
+          </div>
+        </div>
+        <div class="form-field">
+          <label for="phone">Phone</label>
+          <input type="tel" id="phone" name="phone" placeholder="Your phone number" />
+        </div>
+        <div class="form-field">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Type your message here..." data-fs-field required></textarea>
+          <span data-fs-error="message" style="font-size:0.78rem; color:#c0392b;"></span>
+        </div>
+        <button type="submit" class="submit-btn" data-fs-submit-btn>Send Message</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">Bloem Counselling</div>
+    <div class="footer-socials">
+      <a class="social-link" href="https://www.facebook.com/profile.php?id=100094904394188" target="_blank" rel="noopener" title="Facebook" aria-label="Facebook">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      </a>
+      <a class="social-link" href="https://www.instagram.com/bloem_counselling?igsh=aWZheDAxcnZlY3p2" target="_blank" rel="noopener" title="Instagram" aria-label="Instagram">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      </a>
+      <a class="social-link" href="https://wa.me/27798801071" target="_blank" rel="noopener" title="WhatsApp" aria-label="WhatsApp">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+      </a>
+      <a class="social-link" href="https://www.linkedin.com/in/annelie-geldenbloem-van-der-merwe-3486b1180" target="_blank" rel="noopener" title="LinkedIn" aria-label="LinkedIn">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6zM2 9h4v12H2z"/><circle cx="4" cy="4" r="2"/></svg>
+      </a>
+      <a class="social-link" href="https://share.google/PUWudHBlYJskFM4e2" target="_blank" rel="noopener" title="Google" aria-label="Google">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21.805 10.023H12v3.977h5.617c-.242 1.238-.977 2.285-2.078 2.988v2.484h3.363c1.969-1.816 3.102-4.488 3.102-7.637 0-.609-.055-1.195-.199-1.812zM12 22c2.699 0 4.965-.895 6.617-2.43l-3.363-2.484c-.895.602-2.047.957-3.254.957-2.504 0-4.625-1.691-5.383-3.965H3.168v2.558C4.813 19.938 8.188 22 12 22zM6.617 14.078A5.95 5.95 0 0 1 6.3 12c0-.723.125-1.418.317-2.078V7.364H3.168A9.99 9.99 0 0 0 2 12c0 1.617.387 3.145 1.168 4.636l3.449-2.558zM12 6.957c1.414 0 2.684.488 3.684 1.441l2.762-2.762C16.957 4.047 14.695 3 12 3 8.188 3 4.813 5.063 3.168 8.364l3.449 2.558C7.375 8.648 9.496 6.957 12 6.957z"/></svg>
+      </a>
+    </div>
+    <div class="footer-reg">
+      <p>C4CSA Reg. No: CO30229</p>
+      <p>SACSSP Reg. No: 1049508</p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>&copy; 2026 Bloem Counselling. All rights reserved.</p>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    document.getElementById('navLinks').classList.toggle('open');
+  }
+  function scrollTo(id) {
+    document.querySelector(id).scrollIntoView({ behavior: 'smooth' });
+  }
+  // Smooth anchor scrolling
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const target = document.querySelector(a.getAttribute('href'));
+      if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth' }); }
+    });
+  });
+  // Formspree init
+  window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+  formspree('initForm', { formElement: '#contact-form', formId: 'mojzavoo' });
+</script>
+<script src="https://unpkg.com/@formspree/ajax@1" defer></script>
+</body>
+</html>
